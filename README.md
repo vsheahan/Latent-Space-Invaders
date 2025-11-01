@@ -28,7 +28,7 @@
 
 **What I learned:** Teaching a system what "normal" looks like helps with false positives, but doesn't help catch attacks that are designed to look normal (which is all of them). This taught me that unsupervised anomaly detection has fundamental limits when dealing with adversarial attacks.
 
-**What this is:** My second experimental attempt at using math to detect prompt injections. Part of a three-experiment learning journey where I tried different approaches to understand how LLMs work and explore mathematical defenses ([see all experiments](https://github.com/vsheahan/Space-Invaders-Vector-Command)). Not a production system - just research and learning.
+**What this is:** My second experimental attempt at using math to detect prompt injections. Part of a learning journey where I tried different approaches to understand how LLMs work and explore mathematical defenses, including [Embedding Space Invaders](https://github.com/vsheahan/Embedding-Space-Invaders), [Ensemble Space Invaders](https://github.com/vsheahan/Ensemble-Space-Invaders), and [System Collapse](https://github.com/vsheahan/System-Collapse-Rise-Of-The-Invaders). Not a production system - just research and learning.
 
 ---
 
