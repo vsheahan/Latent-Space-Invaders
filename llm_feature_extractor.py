@@ -51,21 +51,8 @@ class LLMFeatureExtractor:
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
-        # Load model with memory optimization
-        if self.device == "cuda":
-            self.model = AutoModelForCausalLM.from_pretrained(
-                model_name,
-                device_map="auto",
-                torch_dtype=torch.float16
-            )
-        else:
-            self.model = AutoModelForCausalLM.from_pretrained(
-                model_name,
-                device_map="auto",
-                torch_dtype=torch.float32,
-                low_cpu_mem_usage=True
-            )
-
+        # Load model
+        self.model = AutoModelForCausalLM.from_pretrained(model_name).to(self.device)
         self.model.eval()  # Set to evaluation mode
 
         # Determine layer indices
