@@ -12,7 +12,7 @@
 
 ## TL;DR
 
-**What's the problem?** My first attempt ([Embedding Space Invaders](https://github.com/vsheahan/Embedding-Space-Invaders)) flagged everything as an attack. 97% false alarms. A security system that tackles grandmas.
+**What's the problem?** My first attempt ([Embedding Space Invaders](https://github.com/vsheahan/Embedding-Space-Invaders)) flagged everything as an attack. 97% false positives. A security system that tackles grandmas.
 
 **What did I try this time?** Instead of measuring "weirdness," I taught an AI system what "normal" prompts look like. Then I flagged anything that didn't match that pattern. Think of it like a bouncer who memorizes what regular customers look like.
 
@@ -24,7 +24,7 @@
 
 **The numbers:**
 - Catches only 2-12% of attacks (terrible)
-- But rarely bothers normal users (7% false alarms - good!)
+- But rarely bothers normal users (7% false positives - good!)
 
 **What I learned:** Teaching a system what "normal" looks like helps with false positives, but doesn't help catch attacks that are designed to look normal (which is all of them). This taught me that unsupervised anomaly detection has fundamental limits when dealing with adversarial attacks.
 
@@ -121,7 +121,7 @@ The system flagged only 9 prompts total. It's extremely confident about what "no
 
 ### 1. VAEs are better than distance metrics (at the wrong thing)
 
-Distance metrics flagged everything. VAEs flag nothing. Neither is ideal, but at least low FPR means fewer false alarms.
+Distance metrics flagged everything. VAEs flag nothing. Neither is ideal, but at least low FPR means fewer false positives.
 
 ### 2. The recall-precision tradeoff is real and it's painful
 
