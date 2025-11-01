@@ -10,7 +10,7 @@
 
 ---
 
-## TL;DR for Non-Technical Readers
+## TL;DR
 
 **What's the problem?** My first attempt ([Embedding Space Invaders](https://github.com/vsheahan/Embedding-Space-Invaders)) flagged everything as an attack. 97% false alarms. A security system that tackles grandmas.
 
