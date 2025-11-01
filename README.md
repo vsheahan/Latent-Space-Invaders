@@ -26,9 +26,9 @@
 - Catches only 2-12% of attacks (terrible)
 - But rarely bothers normal users (7% false alarms - good!)
 
-**What I learned:** Teaching a system what "normal" looks like helps with false positives, but doesn't help catch attacks that are designed to look normal (which is all of them).
+**What I learned:** Teaching a system what "normal" looks like helps with false positives, but doesn't help catch attacks that are designed to look normal (which is all of them). This taught me that unsupervised anomaly detection has fundamental limits when dealing with adversarial attacks.
 
-**Should you use this?** Only if you care WAY more about not annoying users than about catching attacks. For something that actually catches attacks, see [Ensemble Space Invaders](https://github.com/vsheahan/Ensemble-Space-Invaders).
+**What this is:** My second experimental attempt at using math to detect prompt injections. Part of a three-experiment learning journey where I tried different approaches to understand how LLMs work and explore mathematical defenses ([see all experiments](https://github.com/vsheahan/Space-Invaders-Vector-Command)). Not a production system - just research and learning.
 
 ---
 
@@ -121,7 +121,7 @@ The system flagged only 9 prompts total. It's extremely confident about what "no
 
 ### 1. VAEs are better than distance metrics (at the wrong thing)
 
-Distance metrics flagged everything. VAEs flag nothing. Neither is ideal, but at least low FPR means the system is *usable* - you can actually deploy it without your users rioting.
+Distance metrics flagged everything. VAEs flag nothing. Neither is ideal, but at least low FPR means fewer false alarms.
 
 ### 2. The recall-precision tradeoff is real and it's painful
 
@@ -177,17 +177,17 @@ The average reconstruction error on test prompts was **higher** than my threshol
 
 **Distribution shift**: Training on short synthetic prompts, testing on long complex prompts. The VAE had never seen anything like the test data, so *everything* looked anomalous. It panicked and went conservative.
 
-## When Might This Actually Work?
+## When Does This Approach Show Promise?
 
-This approach works best when:
+This VAE-based approach demonstrates its strengths when:
 
-1. **Training data is representative**: Include diverse, real-world safe prompts
+1. **Training data is representative**: Diverse, real-world safe prompts in the training set
 2. **Attacks are structurally distinct**: Complete rewrites, not subtle appends
-3. **You care more about FPR than recall**: Better to miss attacks than annoy users
-4. **You're using it as one signal among many**: Combine with other detection methods
-5. **You can tune per-deployment**: Different thresholds for different use cases
+3. **Low FPR is the priority**: The conservative nature (7.69% FPR) is the main advantage
+4. **Combined with other signals**: VAE features could supplement supervised classifiers
+5. **Threshold tuning**: Different k values create different recall/FPR tradeoffs
 
-Basically, don't expect it to solve prompt injection alone. But as part of a defense-in-depth strategy? I dunno, maybe.
+Basically, unsupervised anomaly detection alone isn't sufficient for adversarial attacks. The value is in providing features for hybrid systems (like Ensemble Space Invaders).
 
 ## Comparison to Distance-Based Methods
 
@@ -353,18 +353,18 @@ python3 main.py --epochs 50
 
 After 20 epochs, the VAE has usually learned what it's going to learn. More epochs won't fix distribution mismatch.
 
-## What You Should Actually Do
+## Future Research Directions
 
-If you want to detect prompt injections in production:
+Based on these experimental results, interesting research directions include:
 
-1. **Use this as one signal**: Combine with perplexity, attention patterns, rule-based filters
-2. **Collect real training data**: Diverse, representative safe prompts from your domain
-3. **Consider supervised learning**: If you have attack examples, just train a classifier
-4. **Set thresholds per use-case**: Higher stakes = lower threshold (better recall)
-5. **Monitor and retrain**: Attacks evolve, your model should too
-6. **Layer defense**: No single method catches everything
+1. **Hybrid approaches**: Combine VAE features with supervised classifiers (explored in Ensemble Space Invaders)
+2. **Better training data**: Diverse, representative safe prompts reduce distribution mismatch
+3. **Supervised learning**: When labeled attack examples exist, supervised methods outperform anomaly detection
+4. **Adaptive thresholds**: Different k values for different recall/FPR tradeoff experiments
+5. **Feature extraction**: VAE latent representations as input to downstream models
+6. **Multi-signal fusion**: Combining multiple detection approaches
 
-Or just use a [prompt injection firewall](https://github.com/protectai/rebuff) that people already built.
+The key insight: unsupervised anomaly detection has fundamental limits against adversarial attacks designed to blend in.
 
 ## Known Issues and Limitations
 
