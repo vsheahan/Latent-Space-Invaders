@@ -8,6 +8,30 @@
 
 *A redemption arc starring VAEs, reconstruction error, and the phrase "well, it's better than before"*
 
+---
+
+## TL;DR for Non-Technical Readers
+
+**What's the problem?** My first attempt ([Embedding Space Invaders](https://github.com/vsheahan/Embedding-Space-Invaders)) flagged everything as an attack. 97% false alarms. A security system that tackles grandmas.
+
+**What did I try this time?** Instead of measuring "weirdness," I taught an AI system what "normal" prompts look like. Then I flagged anything that didn't match that pattern. Think of it like a bouncer who memorizes what regular customers look like.
+
+**Did it work better?** Yes and no:
+- **Good news**: False alarms dropped from 97% to only 3-8%! Normal users weren't constantly flagged anymore. ✓
+- **Bad news**: Now it barely catches any attacks. On one test, it caught only 5 out of 261 attacks (1.92%). ✗
+
+**Why the terrible recall?** The system learned that "normal" has tons of variety. Long prompts, short prompts, questions, commands - all normal! Attacks didn't look "abnormal" enough to trigger detection. It was like the bouncer learning that "regular customers" includes basically everyone, so nobody gets stopped.
+
+**The numbers:**
+- Catches only 2-12% of attacks (terrible)
+- But rarely bothers normal users (7% false alarms - good!)
+
+**What I learned:** Teaching a system what "normal" looks like helps with false positives, but doesn't help catch attacks that are designed to look normal (which is all of them).
+
+**Should you use this?** Only if you care WAY more about not annoying users than about catching attacks. For something that actually catches attacks, see [Ensemble Space Invaders](https://github.com/vsheahan/Ensemble-Space-Invaders).
+
+---
+
 ## What is this?
 
 This is a layer-conditioned Variational Autoencoder that learns what "normal" LLM hidden states look like, then flags prompts that make the model go "I've never seen anything like this before."
